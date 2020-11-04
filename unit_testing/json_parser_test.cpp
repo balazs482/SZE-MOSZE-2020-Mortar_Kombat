@@ -90,7 +90,7 @@ TEST(jsonParseTest, monster_get_test)
 
 TEST(jsonParseTest, type_test)
 {
-	Hero unit = Hero::parse("../unit/unit1_Hero.json");
+	Hero unit = Hero::parse("../units/unit1_Hero.json");
 	ASSERT_EQ(typeid(std::string), typeid(unit.getName()));
 	ASSERT_EQ(typeid(float), typeid(unit.getHealthPoints()));
 	ASSERT_EQ(typeid(float), typeid(unit.getMaxHealthPoints()));
