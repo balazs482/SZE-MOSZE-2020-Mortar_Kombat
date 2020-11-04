@@ -72,7 +72,7 @@ TEST(jsonParserTest, missingfile)
 
 TEST(jsonParserTest, hero_get_test)
 {
-	Hero* hero = new Hero::parse("../unit/unit1_Hero.json");
+	Hero* hero = new Hero Hero::parse("../unit/unit1_Hero.json");
 	ASSERT_EQ(hero->getName(), "Kakarott");
 	ASSERT_EQ(hero->getMaxHealthPoints(), 380);
 	ASSERT_EQ(hero->getDamage(), 20);
@@ -81,7 +81,7 @@ TEST(jsonParserTest, hero_get_test)
 
 TEST(jsonParseTest, monster_get_test)
 {
-	Monster* enemy = new Monster::parse("Zombie.json");
+	Monster* enemy = new Monster Monster::parse("Zombie.json");
 	ASSERT_EQ(enemy->getName(), "Zombie");
 	ASSERT_EQ(enemy->getHealthPoints(), 10);
 	ASSERT_EQ(enemy->getDamage(), 1);
@@ -90,7 +90,7 @@ TEST(jsonParseTest, monster_get_test)
 
 TEST(jsonParseTest, type_test)
 {
-	Hero* unit = new Hero::parse("../units/unit1_Hero.json");
+	Hero* unit = new Hero Hero::parse("../units/unit1_Hero.json");
 	ASSERT_EQ(typeid(std::string), typeid(unit->getName()));
 	ASSERT_EQ(typeid(float), typeid(unit->getHealthPoints()));
 	ASSERT_EQ(typeid(float), typeid(unit->getMaxHealthPoints()));
@@ -102,8 +102,8 @@ TEST(jsonParseTest, type_test)
 
 TEST(jsonParseTest, figthTilDeath_test)
 {
-	Hero* hero = new Hero::parse("../units/unit1_Hero.json");
-	Monster* enemy = new Monster::parse("../units/unit2_Monster.json");
+	Hero* hero = new Hero Hero::parse("../units/unit1_Hero.json");
+	Monster* enemy = new Monster Monster::parse("../units/unit2_Monster.json");
 	hero->fightTilDeath(enemy*);
 	ASSERT_FALSE(hero->isAlive() || enemy->isAlive());
 }
@@ -115,7 +115,7 @@ TEST(jsonParserTest, missing_comma_test)
 
 TEST(jsonParserTest, messed_up_input_keys_test)
 {
-	Hero* bad_hero = new Hero::parse("messed_up_input_keys.json");
+	Hero* bad_hero = new Hero Hero::parse("messed_up_input_keys.json");
 	ASSERT_EQ(bad_hero->getName(), "Kakarott");
 	ASSERT_EQ(bad_hero->getMaxHealthPoints(), 380);
 	ASSERT_EQ(bad_hero->getDamage(), 20);
