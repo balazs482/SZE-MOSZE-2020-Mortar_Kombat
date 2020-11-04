@@ -72,7 +72,7 @@ TEST(jsonParserTest, missingfile)
 
 TEST(jsonParserTest, hero_get_test)
 {
-	Hero hero = Hero::parse("../units/unit1_Hero.json");
+	Hero hero = Hero::parse("../unit/unit1_Hero.json");
 	ASSERT_EQ(hero.getName(), "Kakarott");
 	ASSERT_EQ(hero.getMaxHealthPoints(), 380);
 	ASSERT_EQ(hero.getDamage(), 20);
@@ -102,9 +102,9 @@ TEST(jsonParseTest, type_test)
 
 TEST(jsonParseTest, figthTilDeath_test)
 {
-	Hero hero = Hero::parse("../units/unit1_Hero.json");
-	Monster enemy = Monster::parse("../units/unit2_Monster.json");
-	hero.fightTilDeath(enemy);
+	Hero* hero = new -> Hero::parse("../units/unit1_Hero.json");
+	Monster* enemy = new -> Monster::parse("../units/unit2_Monster.json");
+	hero -> fightTilDeath(enemy);
 	ASSERT_FALSE(hero.isAlive() || enemy.isAlive());
 }
 
