@@ -1,4 +1,4 @@
-#include "../JSON.h"
+#include "JSON.h"
 #include "Character.h"
 #include "Hero.h"
 #include "Monster.h"
