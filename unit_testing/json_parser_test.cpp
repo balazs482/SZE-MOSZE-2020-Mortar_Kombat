@@ -72,7 +72,7 @@ TEST(jsonParserTest, missingfile)
 
 TEST(jsonParserTest, hero_get_test)
 {
-	Hero hero = Hero::parse("../unit/unit1_Hero.json");
+	Hero hero = Hero::parse("../units/unit1_Hero.json");
 	ASSERT_EQ(hero.getName(), "Kakarott");
 	ASSERT_EQ(hero.getMaxHealthPoints(), 380);
 	ASSERT_EQ(hero.getDamage(), 20);
