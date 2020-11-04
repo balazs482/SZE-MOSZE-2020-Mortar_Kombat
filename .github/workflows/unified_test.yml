@@ -1,0 +1,66 @@
+name: Unified testing (DIFFTEST,GTEST,MEMTEST)
+
+on: push
+
+jobs:
+  Build_and_compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: g++-10 -std=c++17 -o a.out *.cpp -lstdc++fs
+      - name: Regaining rights
+        run: chmod a+x ./test.sh
+      - name: Preventing unwanted output append
+        run: rm -f output.csv
+      - name: Calling program from shell
+        run: ./test.sh
+      - name: Checking differences 1
+        run: diff output1.csv expected_output1.csv
+      - name: Checking differences 2
+        run: diff output2.csv expected_output2.csv
+      - name: Deleting temporary file
+        run: rm -f output.csv
+
+  Memory_test_code_analysis:
+    needs: [Build_and_compile]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Cppcheck, Valgrind and Google Test to prevent inclusion error
+        run: sudo apt install cppcheck valgrind
+      - name: Build phase
+        run: g++-10 -std=c++17 -o a.out *.cpp -lstdc++fs
+      - name: Gaining rights
+        run: chmod a+x ./test.sh ./memtest.sh ./code_analysis.sh
+      - name: Calling code analysis
+        run: ./code_analysis.sh
+      - name: Artifact performance and style messages
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./perf-style_log.txt
+      - name: Calling memtest
+        run: ./memtest.sh
+
+  Google_test_and_unit_testing:
+    needs: [Build_and_compile, Memory_test_code_analysis]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install google test and cmake
+        run: sudo apt install libgtest-dev cmake
+      - name: Build phase
+        run: cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make
+      - name: Create symbolic references 1
+        run: sudo ln -st /usr/lib/ /usr/src/gtest/libgtest.a
+      - name: Create symbolic references 2
+        run: sudo ln -st /usr/lib/ /usr/src/gtest/libgtest_main.a
+      - name: Compile and linking .cpp files
+        run: g++-10 -std=c++17 *.cpp -lstdc++fs
+      - name: Prepare build environment
+        run: cmake unit_testing/CMakeLists.txt
+      - name: Unit test
+        run: cd unit_testing && make
+      - name: Running the generated gtest bin
+        run: cd unit_testing && ./runTests
+        
