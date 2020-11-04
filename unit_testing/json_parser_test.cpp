@@ -96,7 +96,7 @@ TEST(jsonParseTest, type_test)
 	ASSERT_EQ(typeid(float), typeid(unit.getMaxHealthPoints()));
 	ASSERT_EQ(typeid(float), typeid(unit.getDamage()));
 	ASSERT_EQ(typeid(float), typeid(unit.getAttackCoolDown()));
-	ASSERT_EQ(typeid(bool), typeid(unit.isAlive());
+	ASSERT_EQ(typeid(bool), typeid(unit.isAlive()));
 
 }
 
