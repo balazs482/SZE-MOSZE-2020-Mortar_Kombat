@@ -73,10 +73,11 @@ TEST(jsonParserTest, missingfile)
 TEST(jsonParserTest, hero_get_test)
 {
 	Hero hero = Hero::parse("../units/unit1_Hero.json");
-	ASSERT_EQ(hero.getName(), "Kakarott");
-	ASSERT_EQ(hero.getMaxHealthPoints(), 380);
-	ASSERT_EQ(hero.getDamage(), 20);
-	ASSERT_EQ(hero.getAttackCoolDown(), 1.9);
+	Hero* heroPointer = &hero;
+	ASSERT_EQ(heroPointer->getName(), "Kakarott");
+	ASSERT_EQ(heroPointer->getMaxHealthPoints(), 380);
+	ASSERT_EQ(heroPointer->getDamage(), 20);
+	ASSERT_EQ(heroPointer->getAttackCoolDown(), 1.9);
 }
 
 TEST(jsonParseTest, monster_get_test)
