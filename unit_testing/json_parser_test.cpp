@@ -77,6 +77,7 @@ TEST(jsonParserTest, hero_get_test)
 	ASSERT_EQ(hero->getMaxHealthPoints(), 380);
 	ASSERT_EQ(hero->getDamage(), 20);
 	ASSERT_EQ(hero->getAttackCoolDown(), 1.9);
+	delete hero;
 }
 
 TEST(jsonParseTest, monster_get_test)
@@ -86,6 +87,7 @@ TEST(jsonParseTest, monster_get_test)
 	ASSERT_EQ(enemy->getHealthPoints(), 10);
 	ASSERT_EQ(enemy->getDamage(), 1);
 	ASSERT_EQ(enemy->getAttackCoolDown(), 2.8);
+	delete enemy;
 }
 
 TEST(jsonParseTest, type_test)
@@ -97,7 +99,7 @@ TEST(jsonParseTest, type_test)
 	ASSERT_EQ(typeid(float), typeid(unit->getDamage()));
 	ASSERT_EQ(typeid(float), typeid(unit->getAttackCoolDown()));
 	ASSERT_EQ(typeid(bool), typeid(unit->isAlive()));
-
+	delete unit;
 }
 
 TEST(jsonParseTest, figthTilDeath_test)
@@ -106,6 +108,8 @@ TEST(jsonParseTest, figthTilDeath_test)
 	Monster* enemy = new Monster Monster::parse("../units/unit2_Monster.json");
 	hero->fightTilDeath(enemy*);
 	ASSERT_FALSE(hero->isAlive() || enemy->isAlive());
+	delete hero;
+	delete enemy;
 }
 
 TEST(jsonParserTest, missing_comma_test)
@@ -120,6 +124,7 @@ TEST(jsonParserTest, messed_up_input_keys_test)
 	ASSERT_EQ(bad_hero->getMaxHealthPoints(), 380);
 	ASSERT_EQ(bad_hero->getDamage(), 20);
 	ASSERT_EQ(bad_hero->getAttackCoolDown(), 1.9);
+	delete bad_hero;
 }
 
 
