@@ -102,8 +102,8 @@ TEST(jsonParseTest, type_test)
 
 TEST(jsonParseTest, figthTilDeath_test)
 {
-	Hero* hero = new -> Hero::parse("../units/unit1_Hero.json");
-	Monster* enemy = new -> Monster::parse("../units/unit2_Monster.json");
+	Hero* hero = new Hero::parse("../units/unit1_Hero.json");
+	Monster* enemy = new Monster::parse("../units/unit2_Monster.json");
 	hero -> fightTilDeath(enemy);
 	ASSERT_FALSE(hero.isAlive() || enemy.isAlive());
 }
