@@ -78,7 +78,7 @@ TEST(parse_test, any_types)
 TEST(parse_test, rearranged_keys)
 {
 	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\", \"hp\" : 380} ");
-	ASSERT_EQ(std::any_cast<std::float>(data["hp"]), 380);
+	ASSERT_EQ(std::any_cast<float>(data["hp"]), 380);
 	ASSERT_EQ(std::any_cast<std::string>(data["name"]), "Kakarott");
 }
 
@@ -142,12 +142,6 @@ TEST(parse_test, expected_char)
 	std::string dataString = " {\"name\" \"Kakarott\"} ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }													   
-
-TEST(parse_test, unexpected_char)
-{
-	std::string dataString = " {\"name\" :: \"Kakarott\"} ";
-	ASSERT_ANY_THROW(JSON::parse(dataString));
-}
 													   
 TEST(parse_test, unexpected_char)
 {
