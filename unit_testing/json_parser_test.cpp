@@ -137,7 +137,7 @@ TEST(parseFromFile_test, get_string)
 	ASSERT_EQ(testMap.get<std::string>("name"), "Test Elek");
 }
 
-TEST(parseFromFile_test, get_string)
+TEST(parseFromFile_test, get_numeric)
 {
 	std::string fileName = "./good.json";
 	JSON testMap = JSON::parseFromFile(fileName);
