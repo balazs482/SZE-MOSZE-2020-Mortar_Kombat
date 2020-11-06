@@ -56,7 +56,7 @@ TEST(parse_test, empty_string)
 	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
 }
 
-TEST(parse_test, unexpected_backslash)
+TEST(parse_test, unexpected_inside)
 {
 	std::string dataString = " {\"name\" : \"Kaka\rott\"} ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
@@ -74,7 +74,7 @@ TEST(parse_test, no_string_ending)
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
-TEST(parse_test, unrecognizedvalue)
+TEST(parse_test, unrecognized_value)
 {
 	std::string dataString = " { \"name\" : almostString } ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
@@ -83,6 +83,12 @@ TEST(parse_test, unrecognizedvalue)
 TEST(parse_test, duplicate_keys)
 {
 	std::string dataString = " {\"name\" : \"Kakarott\", \"name\" : \"another Kakarott\"} ";
+	ASSERT_ANY_THROW(JSON::parse(dataString));
+}
+
+TEST(parse_test, no_key)
+{
+	std::string dataString = "{ : \"Kakarott\" }";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
@@ -104,13 +110,13 @@ TEST(parse_test, bad_continuation)
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 													   
-TEST(parse_test, expected_char)
+TEST(parse_test, expected_outside)
 {
 	std::string dataString = " {\"name\" \"Kakarott\"} ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }													   
 													   
-TEST(parse_test, unexpected_char)
+TEST(parse_test, unexpected_outside)
 {
 	std::string dataString = " {\"name\" :: \"Kakarott\"} ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
