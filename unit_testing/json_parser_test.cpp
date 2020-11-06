@@ -15,10 +15,7 @@ TEST(JSON_members_test, construction)
 		sourceMap["key"] = "value";
 		JSON testMap = JSON(sourceMap);
 	}
-	catch(std::runtime_error& e)
-	{
-		FAIL() << e;
-	}
+	catch(...) FAIL();
 }
 
 TEST(JSON_members_test, count)
