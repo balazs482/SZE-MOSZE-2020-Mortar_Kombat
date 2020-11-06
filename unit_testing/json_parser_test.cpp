@@ -9,30 +9,35 @@
 //_______________________________JSON::map membervariable and relevant functions test_______________________________
 TEST(JSON_members_test, construction)
 {
-	std::map<std::string, std::any> testMap;
-	testMap["key"] = "value";
+	std::map<std::string, std::any> sourceMap;
+	sourceMap["key"] = "value";
+	JSON testMap = JSON::JSON(sourceMap);
 	ASSERT_THROW(JSON::JSON(testMap), std::runtime_error);
 }
 
 TEST(JSON_members_test, count)
 {
-	std::map<std::string, std::string> testMap;
-	testMap["sameKey"] = "firstValue";
-	testMap["sameKey"] = "secondValue";
+	std::map<std::string, std::any> sourceMap;
+	JSON testMap = JSON::JSON(sourceMap);
+	sourceMap["sameKey"] = "firstValue";
+	sourceMap["sameKey"] = "secondValue";
+	JSON testMap = JSON::JSON(sourceMap);
 	ASSERT_EQ(testMap.count("sameKey"), 2);
 }
 
 TEST(JSON_members_test, get_string)
 {
-	std::map<std::string, std::string> testMap;
-	testMap["key"] = "value";
+	std::map<std::string, std::any> sourceMap;
+	sourceMap["key"] = "value";
+	JSON testMap = JSON::JSON(sourceMap);
 	ASSERT_EQ(testMap.get<std::string>("key"), "value");
 }
 
 TEST(JSON_members_test, get_numeric)
 {
-	std::map<std::string, std::string> testMap;
-	testMap["key"] = 1;
+	std::map<std::string, std::any> sourceMap;
+	sourceMap["key"] = 1;
+	JSON testMap = JSON::JSON(sourceMap);
 	ASSERT_EQ(testMap.get<float>("key"), 1);
 }
 
