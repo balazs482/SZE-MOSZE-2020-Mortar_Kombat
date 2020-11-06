@@ -19,7 +19,7 @@ TEST(JSON_members_test, count)
 	sourceMap["sameKey"] = "firstValue";
 	sourceMap["sameKey"] = "secondValue";
 	JSON testMap = JSON(sourceMap);
-	ASSERT_EQ(testMap.count("sameKey"), 2);
+	ASSERT_EQ(testMap.count("sameKey"), 1);
 }
 
 TEST(JSON_members_test, get_string)
