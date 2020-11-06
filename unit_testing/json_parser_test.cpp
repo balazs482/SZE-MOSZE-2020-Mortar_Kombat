@@ -68,7 +68,7 @@ TEST(parse_test, missing_file)
 
 TEST(parse_test, any_types)
 {
-	std::string data = JSON::parse("{\"string\":\"Stringtype\",\"bool\":true,\"float\":1.6,\"null pointer\":null}");
+	std::string data = JSON::parse(" {\"string\" : \"Stringtype\", \"bool\" : true, \"float\" : 1.6, \"null pointer\" : null} ");
 	ASSERT_EQ(std::any_cast<std::string>(data["string"]), "Stringtype");
     	ASSERT_EQ(std::any_cast<bool>(data["bool"]), true);
    	ASSERT_EQ(std::any_cast<float>(data["float"]), 1.6f);
@@ -77,7 +77,7 @@ TEST(parse_test, any_types)
 
 TEST(parse_test, rearranged_keys)
 {
-	std::string data = JSON::parse("{\"name\":\"Kakarott\",\"hp\":380}");
+	std::string data = JSON::parse(" {\"name\" : \"Kakarott\", \"hp\" : 380} ");
 	ASSERT_EQ(std::any_cast<std::string>(data["hp"]), 380);
 	ASSERT_EQ(std::any_cast<std::string>(data["name"]), "Kakarott");
 }
