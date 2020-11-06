@@ -1,129 +1,165 @@
 #include "../JSON.h"
-#include "../Character.h"
-#include "../Hero.h"
-#include "../Monster.h"
 
 #include <gtest/gtest.h>
 #include <map>
 #include <string>
 #include <fstream>
 #include <any>
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 
-int generateRandom() {
-	srand((unsigned)time(0));
-	int randomNumber = rand() % 1000;
-	return randomNumber;
-}
-
-std::string generateWhiteSapces()
+//_______________________________JSON::map membervariable and relevant functions test_______________________________
+TEST(JSON_members_test, construction)
 {
-	std::string whiteSpaces = "";
-	for (int i = 0; i < generateRandom(); i++) { whiteSpaces += " "; }
-	return whiteSpaces;
+	std::map<std::string, std::any> testMap;
+	testMap["key"] = "value";
+	ASSERT_THROW(JSON::JSON(testMap), std::runtime_error);
 }
 
-std::string generateCommas()
+TEST(JSON_members_test, count)
 {
-	std::string commas = "";
-	for (int i = 0; i < generateRandom(); i++) { commas += ","; }
-	return commas;
+	std::map<std::string, std::string> testMap;
+	testMap["sameKey"] = "firstValue";
+	testMap["sameKey"] = "secondValue";
+	ASSERT_EQ(testMap.count("sameKey"), 2);
 }
 
-TEST(jsonParserTest, parsetest)
+TEST(JSON_members_test, get_string)
 {
-	ASSERT_THROW(JSON::parse("none.json", true), std::runtime_error);
-   	ASSERT_NO_THROW(JSON::parse("../unit_testing/good.json", true));
+	std::map<std::string, std::string> testMap;
+	testMap["key"] = "value";
+	ASSERT_EQ(testMap.get<std::string>("key"), "value");
 }
 
-TEST(jsonParserTest, valcheck)
+TEST(JSON_members_test, get_numeric)
 {
-	std::map<std::string, std::any> template_inp = JSON::parse("{\"string\":\"Stringtype\",\"bool\":true,\"float\":1.6,\"null pointer\":null}");
-	ASSERT_EQ(std::any_cast<std::string>(template_inp["string"]), "Stringtype");
-    ASSERT_EQ(std::any_cast<bool>(template_inp["bool"]), true);
-    ASSERT_EQ(std::any_cast<float>(template_inp["float"]), 1.6f);
-	ASSERT_EQ(std::any_cast<nullptr_t>(template_inp["null pointer"]), nullptr);
+	std::map<std::string, std::string> testMap;
+	testMap["key"] = 1;
+	ASSERT_EQ(testMap.get<float>("key"), 1);
 }
 
-TEST(jsonParserTest, filetest)
+//_______________________________JSON::parse basic tests_______________________________
+TEST(parse_test, string_test)
 {
-	std::ifstream jsonFile;
-	jsonFile.open("../unit_testing/missing_comma.json");
-	jsonFile.close();
-	ASSERT_THROW(JSON::parse(jsonFile), std::runtime_error);
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
 }
 
-TEST(jsonParserTest, stringtest)
+TEST(parse_test, stream_test)
 {
-	std::map<std::string, std::any> template_string = JSON::parse("{\"name\":\"Kakarott\",\"hp\":380,\"dmg\":20,\"as\":1.2}");
-	ASSERT_EQ(std::any_cast<std::string>(template_string["name"]), "Kakarott");
-	ASSERT_EQ(std::any_cast<float>(template_string["hp"]), 380);
-    ASSERT_EQ(std::any_cast<float>(template_string["dmg"]), 20);
-    ASSERT_EQ(std::any_cast<float>(template_string["as"]), 1.2f);
+	std::ifstream fileStream;
+	fileStream.open("./good.json");
+	ASSERT_THROW(JSON::parse(fileStream), std::runtime_error);
+	fileStream.close();
 }
 
-TEST(jsonParserTest, missingfile)
+TEST(parse_test, file_test)
 {
-	std::string not_exists = "../../tobe_or_nottobe_unit_test.json";
-	ASSERT_THROW(JSON::parse(not_exists, true), std::runtime_error);
+	std::string fileName = "./good.json";
+	ASSERT_THROW(JSON::parse(fileName, true), std::runtime_error);
 }
 
-TEST(jsonParserTest, hero_get_test)
+TEST(parse_test, missing_file)
 {
-	Hero hero = Hero::parse("../units/unit1_Hero.json");
-	Hero* heroPointer = &hero;
-	ASSERT_EQ(heroPointer->getName(), "Kakarott");
-	ASSERT_EQ(heroPointer->getMaxHealthPoints(), 380);
-	ASSERT_EQ(heroPointer->getDamage(), 20);
-	ASSERT_EQ(heroPointer->getAttackCoolDown(), 1.9);
+	std::string fileName = "./tobe_or_nottobe_unit_test.json";
+	ASSERT_THROW(JSON::parse(fileName, true), std::runtime_error);
 }
 
-TEST(jsonParseTest, monster_get_test)
+TEST(parse_test, any_types)
 {
-	Monster enemy = Monster::parse("Zombie.json");
-	ASSERT_EQ(enemy.getName(), "Zombie");
-	ASSERT_EQ(enemy.getHealthPoints(), 10);
-	ASSERT_EQ(enemy.getDamage(), 1);
-	ASSERT_EQ(enemy.getAttackCoolDown(), 2.8);
+	std::map<std::string, std::any> data = JSON::parse("{\"string\":\"Stringtype\",\"bool\":true,\"float\":1.6,\"null pointer\":null}");
+	ASSERT_EQ(std::any_cast<std::string>(data["string"]), "Stringtype");
+    ASSERT_EQ(std::any_cast<bool>(data["bool"]), true);
+    ASSERT_EQ(std::any_cast<float>(data["float"]), 1.6f);
+	ASSERT_EQ(std::any_cast<nullptr_t>(data["null pointer"]), nullptr);
 }
 
-TEST(jsonParseTest, type_test)
+TEST(parse_test, rearranged_keys)
 {
-	Hero unit = Hero::parse("../units/unit1_Hero.json");
-	ASSERT_EQ(typeid(std::string), typeid(unit.getName()));
-	ASSERT_EQ(typeid(float), typeid(unit.getHealthPoints()));
-	ASSERT_EQ(typeid(float), typeid(unit.getMaxHealthPoints()));
-	ASSERT_EQ(typeid(float), typeid(unit.getDamage()));
-	ASSERT_EQ(typeid(float), typeid(unit.getAttackCoolDown()));
-	ASSERT_EQ(typeid(bool), typeid(unit.isAlive()));
-
+	std::map<std::string, std::any> data = JSON::parse("{\"name\":\"Kakarott\",\"hp\":380}");
+	ASSERT_EQ(std::any_cast<std::string>(data["hp"]), 380);
+	ASSERT_EQ(std::any_cast<std::string>(data["name"]), "Kakarott");
 }
 
-TEST(jsonParseTest, figthTilDeath_test)
+//_______________________________JSON::parse wrong input tests_______________________________
+TEST(parse_test, empty_string)
 {
-	Hero hero = Hero::parse("../units/unit1_Hero.json");
-	Monster enemy = Monster::parse("../units/unit2_Monster.json");
-	hero.fightTilDeath(enemy);
-	ASSERT_FALSE(hero.isAlive() || enemy.isAlive());
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"\"} ";
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
 }
 
-TEST(jsonParserTest, missing_comma_test)
+TEST(parse_test, unexpected_backslash)
 {
-	ASSERT_THROW(JSON::parse("missing_comma.json"), std::runtime_error);
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kaka\rott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
 }
 
-TEST(jsonParserTest, messed_up_input_keys_test)
+TEST(parse_test, unexpected_mokusos_bracket)
 {
-	Hero bad_hero = Hero::parse("messed_up_input_keys.json");
-	ASSERT_EQ(bad_hero.getName(), "Kakarott");
-	ASSERT_EQ(bad_hero.getMaxHealthPoints(), 380);
-	ASSERT_EQ(bad_hero.getDamage(), 20);
-	ASSERT_EQ(bad_hero.getAttackCoolDown(), 1.9);
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kaka}rott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
 }
 
+TEST(parse_test, no_string_ending)
+{
+	std::map<std::string, std::any> data = JSON::parse("{ \"name\" : \"Kakarott }");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
 
+TEST(parse_test, unrecognizedvalue)
+{
+	std::map<std::string, std::any> data = JSON::parse(" { \"name\" : almostString } ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+
+TEST(parse_test, duplicate_keys)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\", \"name\" : \"another Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+
+TEST(parse_test, no_value)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : } ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+													   
+TEST(parse_test, bad_start)
+{
+	std::map<std::string, std::any> data = JSON::parse(" this should not be here {\"name\" : \"Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+													   
+TEST(parse_test, bad_continuation)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\"} this should not be here ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+													   
+TEST(parse_test, expected_char)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" \"Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}													   
+
+TEST(parse_test, unexpected_char)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" :: \"Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+													   
+TEST(parse_test, unexpected_char)
+{
+	std::map<std::string, std::any> data = JSON::parse(" {\"name\" :: \"Kakarott\"} ");
+	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+}
+
+//_______________________________JSON::parseFromFile test_______________________________
+TEST(parseFromFile_test, call_test)
+{
+	std::string fileName = "./good.json";
+	ASSERT_THROW(JSON::parseFromFile(fileName), std::runtime_error);
+}
+
+//_______________________________running all tests_______________________________
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
