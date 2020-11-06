@@ -9,7 +9,7 @@
 //_______________________________JSON::map membervariable and relevant functions test_______________________________
 TEST(JSON_members_test, construction)
 {
-	try()
+	try
 	{
 		std::map<std::string, std::any> sourceMap;
 		sourceMap["key"] = "value";
