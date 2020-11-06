@@ -45,7 +45,7 @@ TEST(parse_test, any_types)
 TEST(parse_test, rearranged_keys)
 {
 	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\", \"hp\" : 380} ");
-	ASSERT_EQ(std::any_cast<float>(data["hp"]), 380);
+	ASSERT_EQ(std::any_cast<float>(data["hp"]), 380.0f);
 	ASSERT_EQ(std::any_cast<std::string>(data["name"]), "Kakarott");
 }
 
@@ -147,7 +147,7 @@ TEST(parseFromFile_test, get_numeric)
 {
 	std::string fileName = "./good.json";
 	JSON testMap = JSON::parseFromFile(fileName);
-	ASSERT_EQ(testMap.get<float>("hp"), 666f);
+	ASSERT_EQ(testMap.get<float>("hp"), 666.0f);
 }
 
 //_______________________________running all tests_______________________________
