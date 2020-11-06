@@ -12,6 +12,7 @@ TEST(JSON_members_test, construction)
 	std::map<std::string, std::any> sourceMap;
 	sourceMap["key"] = "value";
 	ASSERT_NO_THROW(JSON(sourceMap));
+}
 
 TEST(JSON_members_test, count)
 {
