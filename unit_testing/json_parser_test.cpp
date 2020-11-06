@@ -15,9 +15,9 @@ TEST(JSON_members_test, construction)
 		sourceMap["key"] = "value";
 		JSON testMap = JSON(sourceMap);
 	}
-	catch()
+	catch(std::runtime_error& e)
 	{
-		FAIL() << "expected std::runtime_error";
+		FAIL() << e;
 	}
 }
 
