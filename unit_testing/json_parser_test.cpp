@@ -9,9 +9,16 @@
 //_______________________________JSON::map membervariable and relevant functions test_______________________________
 TEST(JSON_members_test, construction)
 {
-	std::map<std::string, std::any> sourceMap;
-	sourceMap["key"] = "value";
-	ASSERT_NO_THROW(JSON(sourceMap));
+	try()
+	{
+		std::map<std::string, std::any> sourceMap;
+		sourceMap["key"] = "value";
+		JSON testMap = JSON(sourceMap);
+	}
+	catch()
+	{
+		FAIL() << "expected std::runtime_error";
+	}
 }
 
 TEST(JSON_members_test, count)
