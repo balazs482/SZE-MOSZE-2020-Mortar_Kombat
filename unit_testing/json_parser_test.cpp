@@ -11,8 +11,7 @@ TEST(JSON_members_test, construction)
 {
 	std::map<std::string, std::any> sourceMap;
 	sourceMap["key"] = "value";
-	ASSERT_THROW(JSON(sourceMap), std::runtime_error);
-}
+	ASSERT_NO_THROW(JSON(sourceMap));
 
 TEST(JSON_members_test, count)
 {
@@ -43,27 +42,27 @@ TEST(JSON_members_test, get_numeric)
 TEST(parse_test, string_test)
 {
 	std::string dataString = " {\"name\" : \"Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_NO_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, stream_test)
 {
 	std::ifstream fileStream;
 	fileStream.open("./good.json");
-	ASSERT_THROW(JSON::parse(fileStream), std::runtime_error);
+	ASSERT_NO_THROW(JSON::parse(fileStream));
 	fileStream.close();
 }
 
 TEST(parse_test, file_test)
 {
 	std::string fileName = "./good.json";
-	ASSERT_THROW(JSON::parse(fileName, true), std::runtime_error);
+	ASSERT_NO_THROW(JSON::parse(fileName, true));
 }
 
 TEST(parse_test, missing_file)
 {
 	std::string fileName = "./tobe_or_nottobe_unit_test.json";
-	ASSERT_THROW(JSON::parse(fileName, true), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(fileName, true));
 }
 
 TEST(parse_test, any_types)
@@ -92,74 +91,74 @@ TEST(parse_test, empty_string)
 TEST(parse_test, unexpected_backslash)
 {
 	std::string dataString = " {\"name\" : \"Kaka\rott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, unexpected_mokusos_bracket)
 {
 	std::string dataString = " {\"name\" : \"Kaka}rott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, no_string_ending)
 {
 	std::string dataString = "{ \"name\" : \"Kakarott }";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, unrecognizedvalue)
 {
 	std::string dataString = " { \"name\" : almostString } ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, duplicate_keys)
 {
 	std::string dataString = " {\"name\" : \"Kakarott\", \"name\" : \"another Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 TEST(parse_test, no_value)
 {
 	std::string dataString = " {\"name\" : } ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 													   
 TEST(parse_test, bad_start)
 {
 	std::string dataString = " this should not be here {\"name\" : \"Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 													   
 TEST(parse_test, bad_continuation)
 {
 	std::string dataString = " {\"name\" : \"Kakarott\"} this should not be here ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 													   
 TEST(parse_test, expected_char)
 {
 	std::string dataString = " {\"name\" \"Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }													   
 
 TEST(parse_test, unexpected_char)
 {
 	std::string dataString = " {\"name\" :: \"Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 													   
 TEST(parse_test, unexpected_char)
 {
 	std::string dataString = " {\"name\" :: \"Kakarott\"} ";
-	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
+	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
 //_______________________________JSON::parseFromFile test_______________________________
 TEST(parseFromFile_test, call_test)
 {
 	std::string fileName = "./good.json";
-	ASSERT_THROW(JSON::parseFromFile(fileName), std::runtime_error);
+	ASSERT_NO_THROW(JSON::parseFromFile(fileName));
 }
 
 //_______________________________running all tests_______________________________
