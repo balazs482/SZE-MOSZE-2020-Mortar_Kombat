@@ -78,7 +78,7 @@ TEST(parse_test, any_types)
 TEST(parse_test, rearranged_keys)
 {
 	std::map<std::string, std::any> data = JSON::parse(" {\"name\" : \"Kakarott\", \"hp\" : 380} ");
-	ASSERT_EQ(std::any_cast<std::string>(data["hp"]), 380);
+	ASSERT_EQ(std::any_cast<std::float>(data["hp"]), 380);
 	ASSERT_EQ(std::any_cast<std::string>(data["name"]), "Kakarott");
 }
 
@@ -92,7 +92,7 @@ TEST(parse_test, empty_string)
 TEST(parse_test, unexpected_backslash)
 {
 	std::string dataString = " {\"name\" : \"Kaka\rott\"} ";
-	ASSERT_THROW(JSON::parse(data), std::runtime_error);
+	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
 }
 
 TEST(parse_test, unexpected_mokusos_bracket)
