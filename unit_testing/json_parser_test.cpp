@@ -6,43 +6,6 @@
 #include <fstream>
 #include <any>
 
-//_______________________________JSON::map membervariable and relevant functions test_______________________________
-TEST(JSON_members_test, construction)
-{
-	try
-	{
-		std::map<std::string, std::any> sourceMap;
-		sourceMap["key"] = "value";
-		JSON testMap = JSON(sourceMap);
-	}
-	catch(...) { FAIL(); }
-}
-
-TEST(JSON_members_test, count)
-{
-	std::map<std::string, std::any> sourceMap;
-	sourceMap["sameKey"] = "firstValue";
-	sourceMap["sameKey"] = "secondValue";
-	JSON testMap = JSON(sourceMap);
-	ASSERT_EQ(testMap.count("sameKey"), 1);
-}
-
-TEST(JSON_members_test, get_string)
-{
-	std::map<std::string, std::any> sourceMap;
-	sourceMap["key"] = "value";
-	JSON testMap = JSON(sourceMap);
-	ASSERT_EQ(testMap.get<std::string>("key"), "value");
-}
-
-TEST(JSON_members_test, get_numeric)
-{
-	std::map<std::string, std::any> sourceMap;
-	sourceMap["key"] = 1;
-	JSON testMap = JSON(sourceMap);
-	ASSERT_EQ(testMap.get<float>("key"), 1);
-}
-
 //_______________________________JSON::parse basic tests_______________________________
 TEST(parse_test, string_test)
 {
@@ -153,11 +116,32 @@ TEST(parse_test, unexpected_char)
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
-//_______________________________JSON::parseFromFile test_______________________________
+//_______________________________JSON::parseFromFile and relevant functions test_______________________________
 TEST(parseFromFile_test, call_test)
 {
 	std::string fileName = "./good.json";
 	ASSERT_NO_THROW(JSON::parseFromFile(fileName));
+}
+
+TEST(parseFromFile_test, count)
+{
+	std::string fileName = "./good.json";
+	JSON testMap = JSON::parseFromFile(fileName);
+	ASSERT_EQ(testMap.count("name"), 1);
+}
+
+TEST(parseFromFile_test, get_string)
+{
+	std::string fileName = "./good.json";
+	JSON testMap = JSON::parseFromFile(fileName);
+	ASSERT_EQ(testMap.get<std::string>("name"), "Test Elek");
+}
+
+TEST(parseFromFile_test, get_string)
+{
+	std::string fileName = "./good.json";
+	JSON testMap = JSON::parseFromFile(fileName);
+	ASSERT_EQ(testMap.get<float>("hp"), 666f);
 }
 
 //_______________________________running all tests_______________________________
