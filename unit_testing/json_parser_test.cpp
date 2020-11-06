@@ -56,9 +56,15 @@ TEST(parse_test, empty_string)
 	ASSERT_THROW(JSON::parse(dataString), std::runtime_error);
 }
 
-TEST(parse_test, unexpected_inside)
+TEST(parse_test, unexpected_inside_A) //backslashchar in the beginning
 {
-	std::string dataString = " {\"name\" : \"Kaka\rott\"} ";
+	std::string dataString = " {\"name\" : \"\"Kakarott\"} ";
+	ASSERT_ANY_THROW(JSON::parse(dataString));
+}
+
+TEST(parse_test, unexpected_inside_B) //backslashchar after the beginning
+{
+	std::string dataString = " {\"name\" : \"Kaka\\rott\"} ";
 	ASSERT_ANY_THROW(JSON::parse(dataString));
 }
 
