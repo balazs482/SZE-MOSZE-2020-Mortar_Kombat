@@ -42,11 +42,18 @@ void checkString(std::string& s)
         throw std::runtime_error("4: Empty string!");
     }
     std::unordered_set<char> backslashChars = {'"', '\\'};
-    for (std::string::size_type pos = 0; pos < s.length(); pos++)
+	if (backslashChars.find(s[0]) != backslashChars.end()) //first character is backslashchar --> error
+	{
+		throw std::runtime_error("5A: Unrecognized value!");
+	}
+    for (std::string::size_type pos = 1; pos < s.length(); pos++)
     {
-        if (backslashChars.find(s[pos]) != backslashChars.end() && s[pos - 1] != '\\') //backslashchar has no '\' before it --> error
+        if (backslashChars.find(s[pos]) != backslashChars.end() && s[pos - 1] != '\\') //backslashchar has no '\' before it and ...
         {
-            throw std::runtime_error("5: Unrecognized value!");
+			if (s[pos] == '\\' && pos < s.length() - 1 && s[pos + 1] != '\\') //...no double '\' with the following character either --> error
+			{
+            	throw std::runtime_error("5B: Unrecognized value!");
+			}
         }
         if (s[pos] == '{' || s[pos] == '}') //these mókusos brackets are not allowed --> error - (Names for various bracket symbols, [https://en.wikipedia.org/wiki/Bracket])
         {
